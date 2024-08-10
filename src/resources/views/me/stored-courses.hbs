@@ -1,0 +1,58 @@
+<div class="mt-4">
+    <div>
+        <h3>My Courses</h3>
+        <a href="/me/trash/courses">Trash</a>
+    </div>
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name Courses</th>
+                <th scope="col" colspan="2">Time Create</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each courses}}
+            <tr>
+                <th scope="row">{{sumEach @index}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.createdAt}}</td>
+                <td>
+                    <a href="/courses/{{this._id}}/edit" class="btn btn-link">Edit</a>
+                    <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this._id}}"
+                        data-target="#deleteCourseModel">Remove</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td class="text-center" colspan="5">Your not yet create any course.
+                    <a href="/courses/create"> Create New Course Right Here!</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+{{!-- delete hidden form!!! --}}
+<form name="deleteCourseForm" method="POST"></form>
+
+{{!-- Confirm delete course --}}
+<div class="modal" id="deleteCourseModel" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Remove Course</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="color: red;">Are you sure for DELETE THIS COURSE!!!!.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-course" type="button" class="btn btn-danger">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Not</button>
+            </div>
+        </div>
+    </div>
+</div>
