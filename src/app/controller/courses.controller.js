@@ -7,10 +7,8 @@ class CourseController {
     }
     // [POST] /courses/store View My Courses
     store(req, res, next) {
-        // res.json(req.body)
-        const formData = req.body
-        formData.image = ` http://img.youtube.com/vi/${formData.videoId}/1.jpg`
-        const course = new Course(formData)
+        req.body.image = ` http://img.youtube.com/vi/${req.body.videoId}/1.jpg`
+        const course = new Course(req.body)
         course.save().then(() => res.redirect('/courses/create')).catch(error => { })
     }
     // [Get] /courses/:id/edit  Update
@@ -31,8 +29,20 @@ class CourseController {
     // [Delete] /courses/:id  Remove
     remove(req, res, next) {
         Course.delete({ _id: req.params.id })
-        .then(() => res.redirect('back'))
-        .catch(next)
+            .then(() => res.redirect('back'))
+            .catch(next)
+    }
+    // [Force Delete] /courses/:id  Force Remove
+    forceRemove(req, res, next) {
+        Course.deleteOne({ _id: req.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next)
+    }
+    // [Patch] /courses/:id/restore  Restore
+    restore(req, res, next) {
+        Course.restore({ _id: req.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next)
     }
     // [Get] /courses/:slug   View 
     show(req, res, next) {

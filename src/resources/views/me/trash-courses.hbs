@@ -18,7 +18,7 @@
                 <td>{{this.name}}</td>
                 <td>{{this.createdAt}}</td>
                 <td>
-                    <a href="/courses/{{this._id}}/edit" class="btn btn-link">Restore</a>
+                    <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}">Restore</a>
                     <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this._id}}"
                         data-target="#deleteCourseModel">Remove Forever</a>
                 </td>
@@ -35,6 +35,9 @@
 </div>
 {{!-- delete hidden form!!! --}}
 <form name="deleteCourseForm" method="POST"></form>
+
+{{!-- restore hidden form!!! --}}
+<form name="restoreCourseForm" method="POST"></form>
 
 {{!-- Confirm delete course --}}
 <div class="modal" id="deleteCourseModel" tabindex="-1" role="dialog">
@@ -56,3 +59,32 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var courseId
+        var deleteForm = document.forms["deleteCourseForm"]
+        var restoreForm = document.forms["restoreCourseForm"]
+        var btnDeleteCourse = document.getElementById("btn-delete-course")
+        var restoreBtn = $('.btn-restore')
+
+        $('#deleteCourseModel').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            courseId = button.data('id')
+            console.log(courseId)
+        })
+        btnDeleteCourse.onclick = function () {
+            deleteForm.action = '/courses/' + courseId + '/force?_method=DELETE'
+            deleteForm.submit()
+        }
+
+        // restore Button Click
+        restoreBtn.click(function (e) {
+            e.preventDefault()
+
+            var courseId = $(this).data('id')
+            restoreForm.action = '/courses/' + courseId + '/restore?_method=PATCH'
+            restoreForm.submit()
+        })
+    })
+
+</script>
