@@ -7,6 +7,7 @@ const port = 3000;
 const route = require('./routes');
 const db = require('./config/db');
 const methodOverride = require('method-override');
+const sortMiddlewares = require('./app/middlewares/sort-middlewares.js');
 
 //Connect to DB
 db.connect();
@@ -20,6 +21,8 @@ app.use(express.json());
 app.use(morgan('combined'));
 // override with POST having ?_method=DELETE
 app.use(methodOverride('_method'))
+// custom middlewares
+app.use(sortMiddlewares);
 // Template engine
 app.engine('hbs', handlebars.engine({
     extname: '.hbs',

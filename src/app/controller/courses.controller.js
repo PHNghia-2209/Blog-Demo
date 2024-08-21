@@ -1,5 +1,6 @@
 const Course = require('../models/course.models');
 const { mongooseToOject } = require('../../util/mongoose');
+const { render } = require('node-sass');
 class CourseController {
     // [Get] /courses/create Create Courses
     create(req, res, next) {
@@ -50,6 +51,29 @@ class CourseController {
             .then(course =>
                 res.render('courses/show', { course: mongooseToOject(course) })
             ).catch(next);
+    }
+    // [Post] /courses/handle-form-actions
+    handleFormAction(req, res, next) {
+        switch (req.body.action) {
+            case 'delete':
+                Course.delete({ _id: { $in: req.body.courseIDs } })
+                    .then(() => res.redirect('back'))
+                    .catch(next)
+                break
+            case 'restore':
+                Course.restore({ _id: { $in: req.body.courseIDs } })
+                    .then(() => res.redirect('back'))
+                    .catch(next)
+                break
+            case 'forceRemove':
+                Course.deleteOne({ _id: { $in: req.body.courseIDs } })
+                    .then(() => res.redirect('back'))
+                    .catch(next)
+                break
+
+            default:
+                res.json({ message: 'Invalid action!!' })
+        }
     }
 }
 module.exports = new CourseController();
