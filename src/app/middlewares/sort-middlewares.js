@@ -1,6 +1,6 @@
-module.exports = function SortMiddlewares(req, res, next) {
+module.exports = function sortMiddlewares(req, res, next) {
 
-    res._sort = {
+    res.locals._sort = {
         enabled: false,
         type: 'default',
     }
@@ -9,7 +9,7 @@ module.exports = function SortMiddlewares(req, res, next) {
         // res._sort.type = req.query.type
         // res._sort.column = req.query.column
 
-        Object.assign(res._sort, {
+        Object.assign(res.locals._sort, {
             enabled: true,
             type: req.query.type,
             column: req.query.column,

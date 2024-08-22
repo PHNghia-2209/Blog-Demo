@@ -1,6 +1,5 @@
 const Course = require('../models/course.models');
 const { mongooseToOject } = require('../../util/mongoose');
-const { render } = require('node-sass');
 class CourseController {
     // [Get] /courses/create Create Courses
     create(req, res, next) {
@@ -10,7 +9,7 @@ class CourseController {
     store(req, res, next) {
         req.body.image = ` http://img.youtube.com/vi/${req.body.videoId}/1.jpg`
         const course = new Course(req.body)
-        course.save().then(() => res.redirect('/courses/create')).catch(error => { })
+        course.save().then(() => res.redirect('/me/store/courses')).catch(next)
     }
     // [Get] /courses/:id/edit  Update
     edit(req, res, next) {

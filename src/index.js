@@ -8,6 +8,7 @@ const route = require('./routes');
 const db = require('./config/db');
 const methodOverride = require('method-override');
 const sortMiddlewares = require('./app/middlewares/sort-middlewares.js');
+const { type } = require('os');
 
 //Connect to DB
 db.connect();
@@ -27,8 +28,28 @@ app.use(sortMiddlewares);
 app.engine('hbs', handlebars.engine({
     extname: '.hbs',
     helpers: {
-        sum: (a, b) => a + b,
-        sumEach: (a) => ++a
+        sumEach: (a) => ++a,
+        sortable: (field, sort) => {
+            const sortType = field === sort.column ? sort.type : 'default'
+
+            const typesOfIcon = {
+                default: 'fa-solid fa-sort',
+                asc: 'fa-solid fa-arrow-down-wide-short',
+                desc: 'fa-solid fa-arrow-down-short-wide'
+            }
+
+            const types = {
+                default: 'desc',
+                asc: 'desc',
+                desc:'asc'
+            }
+
+            const icons = typesOfIcon[sortType]
+            const type = types[sortType]
+
+            return `<a href="?_sort&column=${field}&type=${type}"><i class="${icons}"></i></a></th>`
+        }
+
     }
 }));
 app.set('view engine', 'hbs');

@@ -19,14 +19,14 @@
         </div>
     </div>
 
+    {{_sort.type}}
+
     <table class="table mt-4">
         <thead>
             <tr>
                 <th scope="col" colspan="2">#</th>
-                <th scope="col">
-                    Name Courses
-                    <a href="?_sort&column=name&type=desc"><i class="fa-solid fa-sort"></i></a></th>
-                <th scope="col" colspan="2">Time Create</th>
+                <th scope="col">Name Courses {{{sortable 'name' _sort}}}
+                <th scope="col" colspan="2">Time Create {{{sortable 'createdAt' _sort}}}</th>
             </tr>
         </thead>
         <tbody>
